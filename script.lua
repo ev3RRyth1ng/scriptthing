@@ -45,19 +45,20 @@ local rejoinInProgress = false
 local function attemptRejoin()
 	if rejoinInProgress then return end
 	rejoinInProgress = true
-	task.wait(2)
+	print("[af] rejoin triggered")
+
 	local placeId = game.PlaceId
 	local jobId   = game.JobId
+
 	pcall(function()
 		if jobId and jobId ~= "" then
-			TeleportService:TeleportToPlaceInstance(placeId, jobId, player)
+			TeleportService:TeleportToPlaceInstance(placeId, jobId)
 		else
-			TeleportService:Teleport(placeId, player)
+			TeleportService:Teleport(placeId)
 		end
 	end)
 end
 
--- change url if you rename the file
 if queue_on_teleport then
 	pcall(function()
 		queue_on_teleport([[
@@ -77,9 +78,9 @@ task.spawn(function()
 	end)
 	if not ok2 or not overlay then return end
 
-	overlay.DescendantAdded:Connect(function(d)
-		if d:IsA("TextLabel") then
-			local txt = d.Text
+	local function check(obj)
+		if obj:IsA("TextLabel") then
+			local txt = obj.Text
 			if txt:find("Disconnected")
 			or txt:find("Lost connection")
 			or txt:find("kicked")
@@ -87,6 +88,26 @@ task.spawn(function()
 			or txt:find("connection") then
 				attemptRejoin()
 			end
+		end
+	end
+
+	-- already existing labels
+	for _, d in ipairs(overlay:GetDescendants()) do
+		check(d)
+		if d:IsA("TextLabel") then
+			d:GetPropertyChangedSignal("Text"):Connect(function()
+				check(d)
+			end)
+		end
+	end
+
+	-- new labels
+	overlay.DescendantAdded:Connect(function(d)
+		check(d)
+		if d:IsA("TextLabel") then
+			d:GetPropertyChangedSignal("Text"):Connect(function()
+				check(d)
+			end)
 		end
 	end)
 end)
