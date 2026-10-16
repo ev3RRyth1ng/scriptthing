@@ -60,7 +60,7 @@ end
 if queue_on_teleport then
 	pcall(function()
 		queue_on_teleport([[
-			loadstring(game:HttpGet("https://PASTE_YOUR_RAW_URL_HERE.lua"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/ev3RRyth1ng/scriptthing/refs/heads/main/script"))()
 		]])
 	end)
 end
