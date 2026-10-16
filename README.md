@@ -1,4 +1,5 @@
-<img width="215" height="165" alt="image" src="https://github.com/user-attachments/assets/aelccdc6-52bc-4320-bb6b-48f2b3b4686d" />
+<img width="215" height="165" alt="Снимок экрана 2026-10-16 091842" src="https://github.com/user-attachments/assets/6ce14054-ca83-44f3-a186-8b22842d0372" />
+
 
 wazzzuup
 
