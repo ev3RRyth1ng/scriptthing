@@ -42,6 +42,40 @@ end
 -- ================= auto rejoin =================
 local rejoinInProgress = false
 
+-- detect the queue function across different executors
+local queueFunc =
+    (syn and syn.queue_on_teleport)
+    or (fluxus and fluxus.queue_on_teleport)
+    or (krnl and krnl.queue_on_teleport)
+    or (secure_call and queue_on_teleport)
+    or queue_on_teleport
+    or queueteleport
+    or (getgenv and getgenv().queue_on_teleport)
+
+local SCRIPT_URL = "https://raw.githubusercontent.com/ev3RRything/scriptthing/refs/heads/main/script.lua"
+
+local LOADER = ([[
+	task.wait(3)
+	local ok, err = pcall(function()
+		loadstring(game:HttpGet("]] .. SCRIPT_URL .. [["))()
+	end)
+	if not ok then warn("[af] reload failed:", err) end
+]])
+
+-- queue on script load as well, just in case
+if queueFunc then
+	pcall(queueFunc, LOADER)
+end
+
+-- also queue every time a teleport starts — most reliable moment
+pcall(function()
+	player.OnTeleport:Connect(function(state)
+		if state == Enum.TeleportState.Started and queueFunc then
+			pcall(queueFunc, LOADER)
+		end
+	end)
+end)
+
 local function attemptRejoin()
 	if rejoinInProgress then return end
 	rejoinInProgress = true
@@ -56,14 +90,6 @@ local function attemptRejoin()
 		else
 			TeleportService:Teleport(placeId)
 		end
-	end)
-end
-
-if queue_on_teleport then
-	pcall(function()
-		queue_on_teleport([[
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/ev3RRything/scriptthing/refs/heads/main/script.lua"))()
-		]])
 	end)
 end
 
@@ -91,23 +117,17 @@ task.spawn(function()
 		end
 	end
 
-	-- already existing labels
 	for _, d in ipairs(overlay:GetDescendants()) do
 		check(d)
 		if d:IsA("TextLabel") then
-			d:GetPropertyChangedSignal("Text"):Connect(function()
-				check(d)
-			end)
+			d:GetPropertyChangedSignal("Text"):Connect(function() check(d) end)
 		end
 	end
 
-	-- new labels
 	overlay.DescendantAdded:Connect(function(d)
 		check(d)
 		if d:IsA("TextLabel") then
-			d:GetPropertyChangedSignal("Text"):Connect(function()
-				check(d)
-			end)
+			d:GetPropertyChangedSignal("Text"):Connect(function() check(d) end)
 		end
 	end)
 end)
