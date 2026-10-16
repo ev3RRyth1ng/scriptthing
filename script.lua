@@ -52,7 +52,7 @@ local queueFunc =
     or queueteleport
     or (getgenv and getgenv().queue_on_teleport)
 
-local SCRIPT_URL = "https://raw.githubusercontent.com/ev3RRything/scriptthing/refs/heads/main/script.lua"
+local SCRIPT_URL = "https://raw.githubusercontent.com/ev3RRyth1ng/scriptthing/refs/heads/main/script.lua"
 
 local LOADER = ([[
 	task.wait(3)
