@@ -9,6 +9,9 @@ just some consistent autofarm, doesnt lag, open source.
 
 features: autofarm, anti-afk, auto rejoin and start autofarm if kicked / server shutdown
 
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ev3RRyth1ng/scriptthing/refs/heads/main/script.lua"))()
+```
 **speed:**
 - `<220` — too slow, just in case u have some issues (like rewards for levels doesnt count at all, or etc.)
 - `220–290` — mid speed, consistent, full rewards for all levels (~132 gold\45sec, ~10,560 gold\hour)
