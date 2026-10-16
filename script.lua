@@ -57,15 +57,15 @@ local function attemptRejoin()
 	end)
 end
 
+-- change url if you rename the file
 if queue_on_teleport then
 	pcall(function()
 		queue_on_teleport([[
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/ev3RRyth1ng/scriptthing/refs/heads/main/script.lua"))()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/ev3RRything/scriptthing/refs/heads/main/script.lua"))()
 		]])
 	end)
 end
 
--- watch for the disconnect popup
 task.spawn(function()
 	local CoreGui = game:GetService("CoreGui")
 	local ok, promptGui = pcall(function()
@@ -163,7 +163,6 @@ end
 local function flyLoop()
 	while active and not stopped do
 
-		-- wait for a fresh alive character
 		local character
 		while active and not stopped do
 			character = player.Character
@@ -195,7 +194,6 @@ local function flyLoop()
 		pcall(function() character:PivotTo(CFrame.new(COORDS[1])) end)
 		hrp.AssemblyLinearVelocity = Vector3.zero
 
-		-- death check
 		local function isDead()
 			if player.Character ~= character then return true end
 			if not character.Parent then return true end
@@ -216,7 +214,6 @@ local function flyLoop()
 			end
 		end
 
-		-- hold on the last point
 		if active and not stopped and not isDead() then
 			local finalPos = COORDS[#COORDS]
 			while active and not stopped and not isDead() do
@@ -242,105 +239,95 @@ end
 local pg = player:WaitForChild("PlayerGui")
 
 local gui = Instance.new("ScreenGui")
-gui.Name           = "FlightGui"
+gui.Name           = "af"
 gui.ResetOnSpawn   = false
-gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.IgnoreGuiInset = true
-gui.DisplayOrder   = 100
 gui.Parent         = pg
 
-local PANEL_W, PANEL_H = 240, 210
+local W, H = 220, 168
 
 local panel = Instance.new("Frame")
 panel.Name             = "Panel"
-panel.Size             = UDim2.new(0, PANEL_W, 0, PANEL_H)
-panel.Position         = UDim2.new(0, 20, 0.75, -PANEL_H / 2)
-panel.BackgroundColor3 = Color3.fromRGB(22, 22, 30)
+panel.Size             = UDim2.new(0, W, 0, H)
+panel.Position         = UDim2.new(0, 20, 0.75, -H / 2)
+panel.BackgroundColor3 = Color3.fromRGB(28, 28, 30)
 panel.BorderSizePixel  = 0
 panel.Parent           = gui
 
-Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 14)
+Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 6)
 
-local panelGrad = Instance.new("UIGradient")
-panelGrad.Color = ColorSequence.new({
-	ColorSequenceKeypoint.new(0, Color3.fromRGB(38, 38, 54)),
-	ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 18, 26)),
-})
-panelGrad.Rotation = 90
-panelGrad.Parent   = panel
-
-local panelStroke = Instance.new("UIStroke")
-panelStroke.Color        = Color3.fromRGB(120, 120, 150)
-panelStroke.Transparency = 0.75
-panelStroke.Thickness    = 1
-panelStroke.Parent       = panel
-
+-- header
 local title = Instance.new("TextLabel")
 title.BackgroundTransparency = 1
-title.Position               = UDim2.new(0, 16, 0, 10)
-title.Size                   = UDim2.new(1, -100, 0, 16)
-title.Font                   = Enum.Font.GothamBold
-title.Text                   = "AUTO-FLY"
-title.TextColor3             = Color3.fromRGB(230, 230, 240)
+title.Position               = UDim2.new(0, 12, 0, 8)
+title.Size                   = UDim2.new(1, -80, 0, 14)
+title.Font                   = Enum.Font.SourceSans
+title.Text                   = "autofly"
+title.TextColor3             = Color3.fromRGB(160, 160, 165)
 title.TextSize               = 13
 title.TextXAlignment         = Enum.TextXAlignment.Left
 title.Parent                 = panel
 
 local speedValue = Instance.new("TextLabel")
 speedValue.BackgroundTransparency = 1
-speedValue.Position               = UDim2.new(1, -84, 0, 10)
-speedValue.Size                   = UDim2.new(0, 68, 0, 16)
-speedValue.Font                   = Enum.Font.GothamBold
+speedValue.Position               = UDim2.new(1, -60, 0, 8)
+speedValue.Size                   = UDim2.new(0, 48, 0, 14)
+speedValue.Font                   = Enum.Font.SourceSans
 speedValue.Text                   = tostring(speed)
-speedValue.TextColor3             = Color3.fromRGB(34, 211, 238)
+speedValue.TextColor3             = Color3.fromRGB(200, 200, 205)
 speedValue.TextSize               = 13
 speedValue.TextXAlignment         = Enum.TextXAlignment.Right
 speedValue.Parent                 = panel
 
+-- separator under header
+local sep = Instance.new("Frame")
+sep.Position         = UDim2.new(0, 12, 0, 26)
+sep.Size             = UDim2.new(1, -24, 0, 1)
+sep.BackgroundColor3 = Color3.fromRGB(50, 50, 54)
+sep.BorderSizePixel  = 0
+sep.Parent           = panel
+
+-- start/stop button
 local toggle = Instance.new("TextButton")
-toggle.Position         = UDim2.new(0, 16, 0, 34)
-toggle.Size             = UDim2.new(1, -32, 0, 44)
-toggle.BackgroundColor3 = Color3.fromRGB(38, 38, 54)
-toggle.Text             = "START"
-toggle.TextColor3       = Color3.fromRGB(230, 230, 240)
-toggle.Font             = Enum.Font.GothamBold
-toggle.TextSize         = 16
+toggle.Position         = UDim2.new(0, 12, 0, 34)
+toggle.Size             = UDim2.new(1, -24, 0, 34)
+toggle.BackgroundColor3 = Color3.fromRGB(48, 48, 52)
+toggle.Text             = "start"
+toggle.TextColor3       = Color3.fromRGB(210, 210, 215)
+toggle.Font             = Enum.Font.SourceSansBold
+toggle.TextSize         = 14
 toggle.BorderSizePixel  = 0
-toggle.AutoButtonColor  = false
+toggle.AutoButtonColor  = true
 toggle.Parent           = panel
 
-Instance.new("UICorner", toggle).CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", toggle).CornerRadius = UDim.new(0, 4)
 
-local toggleStroke = Instance.new("UIStroke")
-toggleStroke.Color        = Color3.fromRGB(120, 120, 150)
-toggleStroke.Transparency = 0.75
-toggleStroke.Thickness    = 1
-toggleStroke.Parent       = toggle
-
+-- speed label
 local speedLabel = Instance.new("TextLabel")
 speedLabel.BackgroundTransparency = 1
-speedLabel.Position               = UDim2.new(0, 16, 0, 90)
-speedLabel.Size                   = UDim2.new(0, 120, 0, 14)
-speedLabel.Font                   = Enum.Font.GothamMedium
-speedLabel.Text                   = "SPEED"
-speedLabel.TextColor3             = Color3.fromRGB(140, 140, 160)
-speedLabel.TextSize               = 11
+speedLabel.Position               = UDim2.new(0, 12, 0, 76)
+speedLabel.Size                   = UDim2.new(1, -24, 0, 12)
+speedLabel.Font                   = Enum.Font.SourceSans
+speedLabel.Text                   = "speed"
+speedLabel.TextColor3             = Color3.fromRGB(130, 130, 135)
+speedLabel.TextSize               = 12
 speedLabel.TextXAlignment         = Enum.TextXAlignment.Left
 speedLabel.Parent                 = panel
 
+-- slider
 local slider = Instance.new("Frame")
 slider.Name                   = "Slider"
 slider.BackgroundTransparency = 1
-slider.Position               = UDim2.new(0, 16, 0, 114)
-slider.Size                   = UDim2.new(1, -32, 0, 20)
+slider.Position               = UDim2.new(0, 12, 0, 96)
+slider.Size                   = UDim2.new(1, -24, 0, 16)
 slider.Parent                 = panel
 
 local trackBar = Instance.new("Frame")
 trackBar.Name             = "Track"
 trackBar.AnchorPoint      = Vector2.new(0, 0.5)
 trackBar.Position         = UDim2.new(0, 0, 0.5, 0)
-trackBar.Size             = UDim2.new(1, 0, 0, 6)
-trackBar.BackgroundColor3 = Color3.fromRGB(45, 45, 62)
+trackBar.Size             = UDim2.new(1, 0, 0, 4)
+trackBar.BackgroundColor3 = Color3.fromRGB(52, 52, 56)
 trackBar.BorderSizePixel  = 0
 trackBar.Parent           = slider
 
@@ -351,7 +338,7 @@ local sliderInitScale = (speed - MIN_SPEED) / (MAX_SPEED - MIN_SPEED)
 local fill = Instance.new("Frame")
 fill.Name             = "Fill"
 fill.Size             = UDim2.new(sliderInitScale, 0, 1, 0)
-fill.BackgroundColor3 = Color3.fromRGB(34, 211, 238)
+fill.BackgroundColor3 = Color3.fromRGB(190, 190, 195)
 fill.BorderSizePixel  = 0
 fill.Parent           = trackBar
 
@@ -360,39 +347,62 @@ Instance.new("UICorner", fill).CornerRadius = UDim.new(1, 0)
 local knob = Instance.new("Frame")
 knob.Name             = "Knob"
 knob.AnchorPoint      = Vector2.new(0.5, 0.5)
-knob.Size             = UDim2.new(0, 14, 0, 14)
+knob.Size             = UDim2.new(0, 11, 0, 11)
 knob.Position         = UDim2.new(sliderInitScale, 0, 0.5, 0)
-knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+knob.BackgroundColor3 = Color3.fromRGB(230, 230, 235)
 knob.BorderSizePixel  = 0
 knob.Parent           = trackBar
 
 Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
 
-local knobStroke = Instance.new("UIStroke")
-knobStroke.Color     = Color3.fromRGB(34, 211, 238)
-knobStroke.Thickness = 2
-knobStroke.Parent    = knob
-
+-- anti-afk checkbox
 local afkBtn = Instance.new("TextButton")
-afkBtn.Name             = "AntiAfkBtn"
-afkBtn.Position         = UDim2.new(0, 16, 0, 160)
-afkBtn.Size             = UDim2.new(1, -32, 0, 36)
-afkBtn.BackgroundColor3 = Color3.fromRGB(38, 38, 54)
-afkBtn.Text             = "ANTI-AFK: OFF"
-afkBtn.TextColor3       = Color3.fromRGB(230, 230, 240)
-afkBtn.Font             = Enum.Font.GothamBold
-afkBtn.TextSize         = 13
-afkBtn.BorderSizePixel  = 0
-afkBtn.AutoButtonColor  = false
-afkBtn.Parent           = panel
+afkBtn.Name                 = "AfkBtn"
+afkBtn.Position             = UDim2.new(0, 12, 0, 124)
+afkBtn.Size                 = UDim2.new(1, -24, 0, 28)
+afkBtn.BackgroundTransparency = 1
+afkBtn.Text                 = ""
+afkBtn.TextColor3           = Color3.fromRGB(200, 200, 205)
+afkBtn.AutoButtonColor      = false
+afkBtn.BorderSizePixel      = 0
+afkBtn.Parent               = panel
 
-Instance.new("UICorner", afkBtn).CornerRadius = UDim.new(0, 8)
+local afkBox = Instance.new("Frame")
+afkBox.Name             = "Box"
+afkBox.Position         = UDim2.new(0, 0, 0.5, -7)
+afkBox.Size             = UDim2.new(0, 14, 0, 14)
+afkBox.BackgroundColor3 = Color3.fromRGB(40, 40, 44)
+afkBox.BorderSizePixel  = 0
+afkBox.Parent           = afkBtn
 
-local afkStroke = Instance.new("UIStroke")
-afkStroke.Color        = Color3.fromRGB(120, 120, 150)
-afkStroke.Transparency = 0.75
-afkStroke.Thickness    = 1
-afkStroke.Parent       = afkBtn
+Instance.new("UICorner", afkBox).CornerRadius = UDim.new(0, 3)
+
+local afkBoxStroke = Instance.new("UIStroke")
+afkBoxStroke.Color        = Color3.fromRGB(80, 80, 85)
+afkBoxStroke.Thickness    = 1
+afkBoxStroke.Parent       = afkBox
+
+local afkCheck = Instance.new("Frame")
+afkCheck.Name             = "Check"
+afkCheck.Position         = UDim2.new(0, 3, 0, 3)
+afkCheck.Size             = UDim2.new(0, 8, 0, 8)
+afkCheck.BackgroundColor3 = Color3.fromRGB(70, 160, 90)
+afkCheck.BorderSizePixel  = 0
+afkCheck.Visible          = false
+afkCheck.Parent           = afkBox
+
+Instance.new("UICorner", afkCheck).CornerRadius = UDim.new(0, 2)
+
+local afkLabel = Instance.new("TextLabel")
+afkLabel.BackgroundTransparency = 1
+afkLabel.Position               = UDim2.new(0, 22, 0, 0)
+afkLabel.Size                   = UDim2.new(1, -22, 1, 0)
+afkLabel.Font                   = Enum.Font.SourceSans
+afkLabel.Text                   = "anti-afk"
+afkLabel.TextColor3             = Color3.fromRGB(180, 180, 185)
+afkLabel.TextSize               = 13
+afkLabel.TextXAlignment         = Enum.TextXAlignment.Left
+afkLabel.Parent                 = afkBtn
 
 -- ================= fade in =================
 local fadeProps = {}
@@ -401,7 +411,7 @@ for _, obj in ipairs(gui:GetDescendants()) do
 	if obj:IsA("GuiObject") then
 		props.BackgroundTransparency = obj.BackgroundTransparency
 	end
-	if obj:IsA("TextLabel") or obj:IsA("TextButton") or obj:IsA("TextBox") then
+	if obj:IsA("TextLabel") or obj:IsA("TextButton") then
 		props.TextTransparency       = obj.TextTransparency
 		props.TextStrokeTransparency = obj.TextStrokeTransparency
 	end
@@ -416,15 +426,13 @@ end
 local function fadeTo(alpha, duration)
 	for obj, props in pairs(fadeProps) do
 		if obj.Parent then
-			local targetProps = {}
+			local t = {}
 			for k, orig in pairs(props) do
-				targetProps[k] = orig + (1 - orig) * alpha
+				t[k] = orig + (1 - orig) * alpha
 			end
-			TweenService:Create(
-				obj,
+			TweenService:Create(obj,
 				TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-				targetProps
-			):Play()
+				t):Play()
 		end
 	end
 end
@@ -437,7 +445,7 @@ end
 
 task.spawn(function()
 	task.wait(0.05)
-	fadeTo(0, 0.55)
+	fadeTo(0, 0.3)
 end)
 
 -- ================= panel drag =================
@@ -528,12 +536,10 @@ track(RunService.RenderStepped:Connect(function(dt)
 	if dragTarget then
 		local cx, cy = panel.Position.X.Offset, panel.Position.Y.Offset
 		local vps    = workspace.CurrentCamera.ViewportSize
-		local tx     = math.clamp(dragTarget.X, 0, vps.X - PANEL_W)
-		local ty     = math.clamp(dragTarget.Y, 0, vps.Y - PANEL_H)
+		local tx     = math.clamp(dragTarget.X, 0, vps.X - W)
+		local ty     = math.clamp(dragTarget.Y, 0, vps.Y - H)
 		local a      = math.min(dt * 20, 1)
-		panel.Position = UDim2.new(0,
-			cx + (tx - cx) * a, 0,
-			cy + (ty - cy) * a)
+		panel.Position = UDim2.new(0, cx + (tx - cx) * a, 0, cy + (ty - cy) * a)
 	end
 
 	local a = math.min(dt * 22, 1)
@@ -551,21 +557,14 @@ track(RunService.RenderStepped:Connect(function(dt)
 	end
 end))
 
--- ================= start/stop toggle =================
+-- ================= start/stop =================
 local function setToggleState(isActive)
 	active = isActive
-	local bgColor     = isActive and Color3.fromRGB(16, 185, 129) or Color3.fromRGB(38, 38, 54)
-	local strokeColor = isActive and Color3.fromRGB(80, 230, 180) or Color3.fromRGB(120, 120, 150)
-	local strokeTr    = isActive and 0.4 or 0.75
-
+	local bg = isActive and Color3.fromRGB(40, 95, 55) or Color3.fromRGB(48, 48, 52)
 	TweenService:Create(toggle,
-		TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		{ BackgroundColor3 = bgColor }):Play()
-	TweenService:Create(toggleStroke,
-		TweenInfo.new(0.25),
-		{ Color = strokeColor, Transparency = strokeTr }):Play()
-
-	toggle.Text = isActive and "STOP" or "START"
+		TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ BackgroundColor3 = bg }):Play()
+	toggle.Text = isActive and "stop" or "start"
 	if isActive then
 		task.spawn(flyLoop)
 	end
@@ -576,50 +575,18 @@ track(toggle.MouseButton1Click:Connect(function()
 	setToggleState(not active)
 end))
 
-track(toggle.MouseEnter:Connect(function()
-	if stopped or active then return end
-	TweenService:Create(toggle, TweenInfo.new(0.15),
-		{ BackgroundColor3 = Color3.fromRGB(52, 52, 72) }):Play()
-end))
-
-track(toggle.MouseLeave:Connect(function()
-	if stopped or active then return end
-	TweenService:Create(toggle, TweenInfo.new(0.15),
-		{ BackgroundColor3 = Color3.fromRGB(38, 38, 54) }):Play()
-end))
-
 -- ================= anti-afk toggle =================
 local function setAfkState(state)
-	local bgColor     = state and Color3.fromRGB(16, 185, 129) or Color3.fromRGB(38, 38, 54)
-	local strokeColor = state and Color3.fromRGB(80, 230, 180) or Color3.fromRGB(120, 120, 150)
-	local strokeTr    = state and 0.4 or 0.75
-
-	TweenService:Create(afkBtn,
-		TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		{ BackgroundColor3 = bgColor }):Play()
-	TweenService:Create(afkStroke,
-		TweenInfo.new(0.25),
-		{ Color = strokeColor, Transparency = strokeTr }):Play()
-
-	afkBtn.Text = state and "ANTI-AFK: ON" or "ANTI-AFK: OFF"
+	afkCheck.Visible = state
+	afkLabel.TextColor3 = state
+		and Color3.fromRGB(210, 210, 215)
+		or  Color3.fromRGB(180, 180, 185)
 	setAntiAfk(state)
 end
 
 track(afkBtn.MouseButton1Click:Connect(function()
 	if stopped then return end
 	setAfkState(not antiAfkEnabled)
-end))
-
-track(afkBtn.MouseEnter:Connect(function()
-	if stopped or antiAfkEnabled then return end
-	TweenService:Create(afkBtn, TweenInfo.new(0.15),
-		{ BackgroundColor3 = Color3.fromRGB(52, 52, 72) }):Play()
-end))
-
-track(afkBtn.MouseLeave:Connect(function()
-	if stopped or antiAfkEnabled then return end
-	TweenService:Create(afkBtn, TweenInfo.new(0.15),
-		{ BackgroundColor3 = Color3.fromRGB(38, 38, 54) }):Play()
 end))
 
 -- ================= shutdown =================
@@ -629,9 +596,9 @@ local function stop()
 	active         = false
 	antiAfkEnabled = false
 
-	fadeTo(1, 0.35)
+	fadeTo(1, 0.25)
 
-	task.delay(0.4, function()
+	task.delay(0.3, function()
 		for _, c in ipairs(connections) do
 			if c and c.Connected then
 				pcall(function() c:Disconnect() end)
@@ -662,7 +629,7 @@ _G.__FlightController = { stop = stop }
 
 -- auto start
 task.spawn(function()
-	task.wait(0.35)
+	task.wait(0.25)
 	if stopped then return end
 	setToggleState(true)
 end)
