@@ -14,9 +14,19 @@ features: autofarm, anti-afk, auto rejoin and start autofarm if kicked\server sh
 - `220–290` — mid speed, consistent, full rewards for all levels (~132 gold\45sec, ~10,560 gold\hour)
 - `290–360` — the best imo, consistent, 8\10 levels count (~112 gold\38sec, ~10,611 gold\hour)
 - `>360` — ur crazy
+- **tested on:**
+- MSI Katana GF76 11ue
+- RTX 3060 Laptop GPU
+- Intel Core i5 11400H
+- 16G RAM+16G pagefile
+- Win 11+windhawk mods and debloat
+- Fishstrap roblox launcher
 
 **ALSO!**
 
 join the chillz group to get the estimated gold.
 
 tysm for using my script!
+
+
+**--I am not responsible for the consequences of using my script. By using it, you assume full responsibility for your account.**
